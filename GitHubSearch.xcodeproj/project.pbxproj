@@ -16,6 +16,7 @@
 		055BF8A52027F40A0018D946 /* GitHubSearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BF8A42027F40A0018D946 /* GitHubSearchTests.swift */; };
 		055BF8B02027F40A0018D946 /* GitHubSearchUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BF8AF2027F40A0018D946 /* GitHubSearchUITests.swift */; };
 		055BF8BF20280A5D0018D946 /* LogUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BF8BE20280A5D0018D946 /* LogUtil.swift */; };
+		055BF8C120283EC60018D946 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BF8C020283EC60018D946 /* APIRequest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		055BF8AF2027F40A0018D946 /* GitHubSearchUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubSearchUITests.swift; sourceTree = "<group>"; };
 		055BF8B12027F40A0018D946 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		055BF8BE20280A5D0018D946 /* LogUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogUtil.swift; sourceTree = "<group>"; };
+		055BF8C020283EC60018D946 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +111,7 @@
 				055BF8962027F4090018D946 /* Assets.xcassets */,
 				055BF8982027F4090018D946 /* LaunchScreen.storyboard */,
 				055BF89B2027F4090018D946 /* Info.plist */,
+				055BF8C020283EC60018D946 /* APIRequest.swift */,
 			);
 			path = GitHubSearch;
 			sourceTree = "<group>";
@@ -276,6 +279,7 @@
 				055BF8BF20280A5D0018D946 /* LogUtil.swift in Sources */,
 				055BF8922027F4090018D946 /* DetailViewController.swift in Sources */,
 				055BF8902027F4090018D946 /* MasterViewController.swift in Sources */,
+				055BF8C120283EC60018D946 /* APIRequest.swift in Sources */,
 				055BF88E2027F4090018D946 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -27,6 +27,8 @@ class MasterViewController: UITableViewController {
             let controllers = split.viewControllers
             detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
         }
+
+        let tmp = APIRequest() // try call API request.
     }
 
     override func viewWillAppear(_ animated: Bool) {
