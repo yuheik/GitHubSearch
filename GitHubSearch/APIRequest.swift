@@ -19,7 +19,7 @@ class APIRequest {
 
         var request = URLRequest(url: githubURL)
         request.httpMethod = "GET"
-        request.addValue("application/vnd.github.v3+josn", forHTTPHeaderField: "Accept")
+        request.addValue("application/vnd.github.v3+json", forHTTPHeaderField: "Accept")
 
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
