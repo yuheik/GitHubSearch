@@ -52,6 +52,13 @@ class LogUtil {
         NSLog(prefix + "=> \(message)")
     }
 
+    static func error(sourceFilePath file : String = #file,
+                      sourceLineNum  line : Int    = #line,
+                      _ error             : Error) {
+        let prefix = getPrefix(file, line)
+        NSLog(prefix + "=> \(error)")
+    }
+
     // MARK: Private
 
     static private func getPrefix(_ filePath : String,
