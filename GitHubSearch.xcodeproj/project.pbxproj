@@ -15,6 +15,7 @@
 		055BF89A2027F4090018D946 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 055BF8982027F4090018D946 /* LaunchScreen.storyboard */; };
 		055BF8A52027F40A0018D946 /* GitHubSearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BF8A42027F40A0018D946 /* GitHubSearchTests.swift */; };
 		055BF8B02027F40A0018D946 /* GitHubSearchUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BF8AF2027F40A0018D946 /* GitHubSearchUITests.swift */; };
+		055BF8BF20280A5D0018D946 /* LogUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BF8BE20280A5D0018D946 /* LogUtil.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		055BF8AB2027F40A0018D946 /* GitHubSearchUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GitHubSearchUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		055BF8AF2027F40A0018D946 /* GitHubSearchUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubSearchUITests.swift; sourceTree = "<group>"; };
 		055BF8B12027F40A0018D946 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		055BF8BE20280A5D0018D946 /* LogUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogUtil.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 		055BF88C2027F4090018D946 /* GitHubSearch */ = {
 			isa = PBXGroup;
 			children = (
+				055BF8BD20280A5D0018D946 /* Utils */,
 				055BF88D2027F4090018D946 /* AppDelegate.swift */,
 				055BF88F2027F4090018D946 /* MasterViewController.swift */,
 				055BF8912027F4090018D946 /* DetailViewController.swift */,
@@ -126,6 +129,14 @@
 				055BF8B12027F40A0018D946 /* Info.plist */,
 			);
 			path = GitHubSearchUITests;
+			sourceTree = "<group>";
+		};
+		055BF8BD20280A5D0018D946 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				055BF8BE20280A5D0018D946 /* LogUtil.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -262,6 +273,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				055BF8BF20280A5D0018D946 /* LogUtil.swift in Sources */,
 				055BF8922027F4090018D946 /* DetailViewController.swift in Sources */,
 				055BF8902027F4090018D946 /* MasterViewController.swift in Sources */,
 				055BF88E2027F4090018D946 /* AppDelegate.swift in Sources */,
