@@ -14,6 +14,8 @@ class DetailViewController: UIViewController {
 
 
     func configureView() {
+        LogUtil.traceFunc()
+
         // Update the user interface for the detail item.
         if let detail = detailItem {
             if let label = detailDescriptionLabel {
@@ -24,17 +26,23 @@ class DetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        LogUtil.traceFunc()
+
         // Do any additional setup after loading the view, typically from a nib.
         configureView()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+        LogUtil.traceFunc()
+
         // Dispose of any resources that can be recreated.
     }
 
     var detailItem: NSDate? {
         didSet {
+            LogUtil.traceFunc()
+
             // Update the view.
             configureView()
         }
