@@ -56,46 +56,6 @@ class APIRequest {
         }
     }
 
-    enum JSONDecodeError: Error {
-        case MissingRequiredKey(String)
-        case UnexpectedType(key: String, expected: Any, actutal: Any)
-    }
-
-    struct JSONObject {
-        let JSON: [String : AnyObject]
-
-        func get<T>(_ key: String) throws -> T {
-            guard let value = JSON[key] else {
-                throw JSONDecodeError.MissingRequiredKey(key)
-            }
-
-            guard let typedValue = value as? T else {
-                throw JSONDecodeError.UnexpectedType(key: key,
-                                                     expected: String(describing: T.self),
-                                                     actutal: value.type)
-            }
-
-            return typedValue
-        }
-
-        func get<T>(_ key: String) throws -> T? {
-            guard let value = JSON[key] else {
-                return nil
-            }
-
-            if value is NSNull {
-                return nil
-            }
-
-            guard let typedValue = value as? T else {
-                throw JSONDecodeError.UnexpectedType(key: key,
-                                                     expected: String(describing: T.self),
-                                                     actutal: value.type)
-            }
-
-            return typedValue
-        }
-    }
 
 
     // MARK: Initializer
@@ -134,5 +94,91 @@ class APIRequest {
         }
 
         task.resume()
+    }
+}
+
+enum JSONDecodeError: Error {
+    case MissingRequiredKey(String)
+    case UnexpectedType(key: String, expected: Any, actutal: Any)
+}
+
+struct JSONObject {
+    let JSON: [String : AnyObject]
+
+    func get<T>(_ key: String) throws -> T {
+        guard let value = JSON[key] else {
+            throw JSONDecodeError.MissingRequiredKey(key)
+        }
+
+        guard let typedValue = value as? T else {
+            throw JSONDecodeError.UnexpectedType(key      : key,
+                                                 expected : String(describing: T.self),
+                                                 actutal  : value.type)
+        }
+
+        return typedValue
+    }
+
+    func get<T>(_ key: String) throws -> T? {
+        guard let value = JSON[key] else {
+            return nil
+        }
+
+        if value is NSNull {
+            return nil
+        }
+
+        guard let typedValue = value as? T else {
+            throw JSONDecodeError.UnexpectedType(key      : key,
+                                                 expected : String(describing: T.self),
+                                                 actutal  : value.type)
+        }
+
+        return typedValue
+    }
+}
+
+// MARK: WebAPI
+protocol JSONDecodable {
+    init(JSON: JSONObject) throws
+}
+
+enum HTTPMethod: String {
+    case OPTIONS
+    case GET
+    case HEAD
+    case POST
+    case PUT
+    case DELETE
+    case TRACE
+    case CONNECT
+}
+
+protocol APIEndpoint {
+    var url                     : URL                { get }
+    var method                  : HTTPMethod         { get }
+    var query                   : [String : String]? { get }
+    var headers                 : [String : String]? { get }
+    associatedtype ResponseType : JSONDecodable
+}
+
+extension APIEndpoint {
+    var method  : HTTPMethod         { return .GET }
+    var query   : [String : String]? { return nil  }
+    var headers : [String : String]? { return nil  }
+
+    var urlRequest: NSURLRequest {
+        var components = URLComponents(url: url,
+                                       resolvingAgainstBaseURL: true)
+        components?.queryItems = query?.map(URLQueryItem.init)
+
+        let req = NSMutableURLRequest(url: components?.url ?? url)
+        req.httpMethod = method.rawValue
+
+        for (key, value) in headers ?? [:] {
+            req.addValue(value, forHTTPHeaderField: key)
+        }
+
+        return req
     }
 }
