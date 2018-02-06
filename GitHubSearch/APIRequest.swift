@@ -46,6 +46,30 @@ class APIRequest {
         }
     }
 
+    enum JSONDecodeError: Error {
+        case MissingRequiredKey(String)
+        case UnexpectedType(key: String, expected: Any, actutal: Any)
+    }
+
+    struct JSONObject {
+        let JSON: [String : AnyObject]
+
+        func get<T>(key: String) throws -> T {
+            guard let value = JSON[key] else {
+                throw JSONDecodeError.MissingRequiredKey(key)
+            }
+
+            guard let typedValue = value as? T else {
+                throw JSONDecodeError.UnexpectedType(key: key,
+                                                     expected: String(describing: T.self),
+                                                     actutal: value.type)
+            }
+
+            return typedValue
+        }
+    }
+
+
     // MARK: Initializer
     init() {
         LogUtil.traceFunc()
