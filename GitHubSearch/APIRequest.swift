@@ -77,6 +77,24 @@ class APIRequest {
 
             return typedValue
         }
+
+        func get<T>(_ key: String) throws -> T? {
+            guard let value = JSON[key] else {
+                return nil
+            }
+
+            if value is NSNull {
+                return nil
+            }
+
+            guard let typedValue = value as? T else {
+                throw JSONDecodeError.UnexpectedType(key: key,
+                                                     expected: String(describing: T.self),
+                                                     actutal: value.type)
+            }
+
+            return typedValue
+        }
     }
 
 
