@@ -44,6 +44,16 @@ class APIRequest {
             self.receivedEventsURL = receivedEventsURL
             self.type              = type
         }
+
+        init(JSON: JSONObject) {
+            self.login             = try! JSON.get("login")
+            self.id                = try! JSON.get("id")
+            self.avaterURL         = URL(string: try! JSON.get("avaterURL"))!
+            self.gravatarID        = try! JSON.get("gravatarID")
+            self.url               = URL(string: try! JSON.get("url"))!
+            self.receivedEventsURL = URL(string: try! JSON.get("receivedEventsURL"))!
+            self.type              = try! JSON.get("type")
+        }
     }
 
     enum JSONDecodeError: Error {
@@ -54,7 +64,7 @@ class APIRequest {
     struct JSONObject {
         let JSON: [String : AnyObject]
 
-        func get<T>(key: String) throws -> T {
+        func get<T>(_ key: String) throws -> T {
             guard let value = JSON[key] else {
                 throw JSONDecodeError.MissingRequiredKey(key)
             }
