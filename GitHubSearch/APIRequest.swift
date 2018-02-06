@@ -13,6 +13,39 @@ class APIRequest {
     static let GITHUB_API: String = "https://api.github.com/search/repositories?q=Hatena&page=1"
     let GITHUB_URL = URL(string: GITHUB_API)!
 
+    // MARK: Struct
+    struct Owner {
+        let login             : String
+        let id                : Int
+        let avaterURL         : URL
+        let gravatarID        : String
+        let url               : URL
+        let receivedEventsURL : URL
+        let type              : String
+
+        init?(JSON: [String : AnyObject]) {
+            guard
+                let login             = JSON["login"]              as? String,
+                let id                = JSON["id"]                 as? Int,
+                let avaterURL         = (JSON["avaterURL"]         as? String).flatMap(URL.init(string:)),
+                let gravatarID        = JSON["gravatarID"]         as? String,
+                let url               = (JSON["url"]               as? String).flatMap(URL.init(string:)),
+                let receivedEventsURL = (JSON["receivedEventsURL"] as? String).flatMap(URL.init(string:)),
+                let type              = JSON["type"]               as? String
+                else {
+                    return nil
+            }
+
+            self.login             = login
+            self.id                = id
+            self.avaterURL         = avaterURL
+            self.gravatarID        = gravatarID
+            self.url               = url
+            self.receivedEventsURL = receivedEventsURL
+            self.type              = type
+        }
+    }
+
     // MARK: Initializer
     init() {
         LogUtil.traceFunc()
@@ -51,6 +84,3 @@ class APIRequest {
         task.resume()
     }
 }
-
-
-
