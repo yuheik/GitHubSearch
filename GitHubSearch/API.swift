@@ -25,53 +25,53 @@ enum HTTPMethod: String {
 }
 
 protocol APIEndpoint {
-    var url                     : URL                { get }
-    var method                  : HTTPMethod         { get }
-    var query                   : [String : String]? { get }
-    var headers                 : [String : String]? { get }
+    var URL                     : NSURL       { get }
+    var method                  : HTTPMethod  { get }
+    var query                   : Parameters? { get }
+    var headers                 : Parameters? { get }
     associatedtype ResponseType : JSONDecodable
 }
 
 extension APIEndpoint {
-    var method  : HTTPMethod         { return .GET }
-    var query   : [String : String]? { return nil  }
-    var headers : [String : String]? { return nil  }
+    var method  : HTTPMethod  { return .GET }
+    var query   : Parameters? { return nil  }
+    var headers : Parameters? { return nil  }
 }
 
 extension APIEndpoint {
     private var URLRequest: NSURLRequest {
-        let components = NSURLComponents(url: url,
+        let components = NSURLComponents(url: URL as URL, // @todo
                                          resolvingAgainstBaseURL: true)
-        components?.queryItems = query?.map(URLQueryItem.init)
+        components?.queryItems = query?.parameters.map(NSURLQueryItem.init)
 
-        let req = NSMutableURLRequest(url: components?.url ?? url)
+        let req = NSMutableURLRequest(URL: components?.url ?? URL)
         req.httpMethod = method.rawValue
 
-        for (key, value) in headers ?? [:] {
+        for case let (key, value) in headers?.parameters ?? [:] {
             req.addValue(value, forHTTPHeaderField: key)
         }
 
         return req
     }
 
-    func request(session: URLSession,
-                 callback: @escaping (APIResult<ResponseType>) -> Void) -> URLSessionDataTask {
+    func request(session: NSURLSession,
+                 callback: @escaping (APIResult<ResponseType>) -> Void) -> NSURLSessionDataTask {
         LogUtil.traceFunc(className: "APIEndpoint")
 
-        let task = session.dataTask(with: URLRequest as URLRequest) { (data, response, error) in
+        let task = session.dataTaskWithRequest(URLRequest) { (data, response, error) in
             if let e = error {
                 LogUtil.error(e)
                 callback(.Failure(e))
             } else if let data = data {
                 do {
-                    guard let dic = try JSONSerialization.jsonObject(with: data, options: []) as? [String : AnyObject] else {
+                    guard let dic = try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String : AnyObject] else {
                         LogUtil.debug("unexpected response type")
                         throw APIError.UnexpectedResponseType
                     }
 
-                    let response = try ResponseType(JSON: JSONObject(JSON: dic))
-                    print(response)
                     print(dic)
+
+                    let response = try ResponseType(JSON: JSONObject(JSON: dic))
                     LogUtil.debug("response")
                     callback(.Success(response))
                 } catch {
@@ -91,8 +91,18 @@ extension APIEndpoint {
 
 enum APIResult<Response> {
     case Success(Response)
-    case Failure(Error)
+    case Failure(ErrorType)
 }
 
+struct Parameters: DictionaryLiteralConvertible {
+    typealias Key = Stringnn
+    typealias Value = String?
+    private(set) var parameters: [Key: Value] = [:]
 
+    init(dictionaryLiteral elements: (String, String?)...) {
+        for case let (key, value?) in elements {
+            parameters[key] = value
+        }
+    }
+}
 
