@@ -28,7 +28,15 @@ class MasterViewController: UITableViewController {
             detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
         }
 
-        let tmp = APIRequest() // try call API request.
+//        let _ = APIRequest() // try call API request.
+        SearchRepositories(searchQuery: "Hatena", page: 0).request(session: URLSession.shared) { (result) in
+            switch result {
+            case .Success(let searchResult):
+                print(searchResult)
+            case .Failure(let error):
+                print(error)
+            }
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
