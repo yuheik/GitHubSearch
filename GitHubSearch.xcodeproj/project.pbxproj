@@ -18,6 +18,8 @@
 		055BF8BF20280A5D0018D946 /* LogUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BF8BE20280A5D0018D946 /* LogUtil.swift */; };
 		055BF8C120283EC60018D946 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055BF8C020283EC60018D946 /* APIRequest.swift */; };
 		055F076C202BE2F7009F33D9 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055F076B202BE2F7009F33D9 /* API.swift */; };
+		05CF1A4C202C0F9000DBA96E /* JSONObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CF1A4B202C0F9000DBA96E /* JSONObject.swift */; };
+		05CF1A4E202C10D600DBA96E /* GitHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CF1A4D202C10D600DBA96E /* GitHub.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +57,8 @@
 		055BF8BE20280A5D0018D946 /* LogUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogUtil.swift; sourceTree = "<group>"; };
 		055BF8C020283EC60018D946 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
 		055F076B202BE2F7009F33D9 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		05CF1A4B202C0F9000DBA96E /* JSONObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONObject.swift; sourceTree = "<group>"; };
+		05CF1A4D202C10D600DBA96E /* GitHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHub.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +119,8 @@
 				055BF89B2027F4090018D946 /* Info.plist */,
 				055BF8C020283EC60018D946 /* APIRequest.swift */,
 				055F076B202BE2F7009F33D9 /* API.swift */,
+				05CF1A4B202C0F9000DBA96E /* JSONObject.swift */,
+				05CF1A4D202C10D600DBA96E /* GitHub.swift */,
 			);
 			path = GitHubSearch;
 			sourceTree = "<group>";
@@ -281,10 +287,12 @@
 			files = (
 				055BF8BF20280A5D0018D946 /* LogUtil.swift in Sources */,
 				055BF8922027F4090018D946 /* DetailViewController.swift in Sources */,
+				05CF1A4E202C10D600DBA96E /* GitHub.swift in Sources */,
 				055BF8902027F4090018D946 /* MasterViewController.swift in Sources */,
 				055BF8C120283EC60018D946 /* APIRequest.swift in Sources */,
 				055F076C202BE2F7009F33D9 /* API.swift in Sources */,
 				055BF88E2027F4090018D946 /* AppDelegate.swift in Sources */,
+				05CF1A4C202C0F9000DBA96E /* JSONObject.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
