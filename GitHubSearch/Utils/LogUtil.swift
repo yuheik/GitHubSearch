@@ -28,10 +28,11 @@ class LogUtil {
 
     // MARK: Public
 
-    static func traceFunc(sourceFilePath file       : String                  = #file,
+    static func traceFunc(className      file       : String                  = #file,
                           sourceLineNum  line       : Int                     = #line,
                           sourceFuncName funcName   : String                  = #function,
-                          params         funcParams : Dictionary<String, Any> = Dictionary()) {
+                          params         funcParams : Dictionary<String, Any> = Dictionary(),
+                          message        msg        : String?                 = nil) {
 
         let prefix = getPrefix(file, line)
         NSLog(prefix + "\(funcName)")
@@ -43,7 +44,26 @@ class LogUtil {
         for (key, value) in funcParams {
             NSLog(prefix + "  >> \(key) : \(value)")
         }
+
+        if let _ = msg {
+            NSLog(prefix + " >> \(msg!)")
+        }
     }
+
+    /*
+    static func traceFunc(_              message    : String,
+                          sourceFilePath file       : String                  = #file,
+                          sourceLineNum  line       : Int                     = #line,
+                          sourceFuncName funcName   : String                  = #function) {
+        print("message  : \(message)")
+        print("file     : \(file)")
+        print("line     : \(line)")
+        print("funcName : \(funcName)")
+
+        let prefix = getPrefix(file, line)
+        NSLog(prefix + "\(funcName) \(message)" )
+    }
+ */
 
     static func debug(sourceFilePath file : String = #file,
                       sourceLineNum  line : Int    = #line,
