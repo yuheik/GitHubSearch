@@ -15,8 +15,8 @@ protocol GitHubEndpoint : APIEndpoint {
 private let GitHubURL = URL(string: "https://api.github.com/")
 
 extension GitHubEndpoint {
-    var url: NSURL {
-        return NSURL(string: path, relativeTo: GitHubURL)!
+    var url: URL {
+        return Foundation.URL(string: path, relativeTo: GitHubURL)!
     }
 
     var headers: Parameters {
@@ -40,21 +40,21 @@ struct SearchRepositories : GitHubEndpoint {
     }
 }
 
-private let dateFormatter: NSDateFormatter = {
-    let formatter = NSDateFormatter()
-    formatter.calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
+private let dateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.calendar = Calendar(identifier: Calendar.Identifier.gregorian)
     formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
     return formatter
 }()
 
 struct FormattedDateConverter: JSONValueConverter {
     typealias FromType = String
-    typealias ToType = NSDate
+    typealias ToType = Date
 
-    private let dateFormatter: NSDateFormatter
+    private let dateFormatter: DateFormatter
 
-    func convert(value: FromType) throws -> DateConverter.ToType {
-        guard let date = dateFormatter.dateFromString(value) else {
+    func convert(key: String, value: FromType) throws -> DateConverter.ToType {
+        guard let date = dateFormatter.date(from: value) else {
             throw JSONDecodeError.UnexpectedValue(key: key,
                                                   value: value,
                                                   message: "Invalid date format for '\(dateFormatter.dateFormat)'")
@@ -89,13 +89,13 @@ struct Repository: JSONDecodable {
     let full_name         : String
     let owner             : Owner
     let is_private        : Bool
-    let html_url          : NSURL
+    let html_url          : URL
     let description       : String?
     let fork              : Bool
-    let url               : NSURL
-    let created_at        : NSDate
-    let updated_at        : NSDate
-    let pushed_at         : NSDate?
+    let url               : URL
+    let created_at        : Date
+    let updated_at        : Date
+    let pushed_at         : Date?
     let homepage          : String?
     let size              : Int
     let stargazers_count  : Int

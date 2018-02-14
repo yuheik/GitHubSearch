@@ -10,7 +10,7 @@ protocol JSONDecodable {
     init(JSON: JSONObject) throws
 }
 
-enum JSONDecodeError: ErrorType, CustomDebugStringConvertible {
+enum JSONDecodeError: Error, CustomDebugStringConvertible {
     case MissingRequiredKey(String)
     case UnexpectedType(key: String, expected: Any.Type, actual: Any.Type)
     case UnexpectedValue(key: String, value: Any, message: String?)
@@ -94,7 +94,7 @@ struct JSONObject {
         guard let typedValue = value as? Converter.FromType else {
             throw JSONDecodeError.UnexpectedType(key      : key,
                                                  expected : Converter.FromType.self,
-                                                 actual  : value.dynamicType)
+                                                 actual  : type(of: value))
         }
 
         return try converter.convert(key: key, value: typedValue)
@@ -112,7 +112,7 @@ struct JSONObject {
         guard let typedValue = value as? Converter.FromType else {
             throw JSONDecodeError.UnexpectedType(key      : key,
                                                  expected : Converter.FromType.self,
-                                                 actual   : value.dynamicType)
+                                                 actual   : type(of: value))
         }
 
         return try converter.convert(key: key, value: typedValue)
@@ -155,14 +155,14 @@ struct JSONObject {
 
 import Foundation
 
-extension NSURL: JSONConvertible {
+extension URL: JSONConvertible {
     typealias ConverterType = URLConverter
     static var converter: ConverterType {
         return URLConverter()
     }
 }
 
-extension NSDate: JSONConvertible {
+extension Date: JSONConvertible {
     typealias ConverterType = DateConverter
     static var converter: ConverterType {
         return DateConverter()
@@ -171,10 +171,10 @@ extension NSDate: JSONConvertible {
 
 struct URLConverter: JSONValueConverter {
     typealias FromType = String
-    typealias ToType = NSURL
+    typealias ToType = URL
 
     func convert(key: String, value: FromType) throws -> URLConverter.ToType {
-        guard let URL = NSURL(string: value) else {
+        guard let URL = URL(string: value) else {
             throw JSONDecodeError.UnexpectedValue(key: key, value: value, message: "Invalid URL")
         }
         return URL
@@ -182,11 +182,11 @@ struct URLConverter: JSONValueConverter {
 }
 
 struct DateConverter: JSONValueConverter {
-    typealias FromType = NSTimeInterval
-    typealias ToType = NSDate
+    typealias FromType = TimeInterval
+    typealias ToType = Date
 
     func convert(key: String, value: FromType) -> DateConverter.ToType {
-        return NSDate(timeIntervalSince1970: value)
+        return Date(timeIntervalSince1970: value)
     }
 }
 

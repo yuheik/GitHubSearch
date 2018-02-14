@@ -57,7 +57,7 @@ class MasterViewController: UITableViewController {
     func insertNewObject(_ sender: Any) {
         LogUtil.traceFunc()
 
-        objects.insert(NSDate(), at: 0)
+        objects.insert(Date(), at: 0)
         let indexPath = IndexPath(row: 0, section: 0)
         tableView.insertRows(at: [indexPath], with: .automatic)
     }
@@ -70,7 +70,7 @@ class MasterViewController: UITableViewController {
 
         if segue.identifier == "showDetail" {
             if let indexPath = tableView.indexPathForSelectedRow {
-                let object = objects[indexPath.row] as! NSDate
+                let object = objects[indexPath.row] as! Date
                 let controller = (segue.destination as! UINavigationController).topViewController as! DetailViewController
                 controller.detailItem = object
                 controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
@@ -99,7 +99,7 @@ class MasterViewController: UITableViewController {
 
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
 
-        let object = objects[indexPath.row] as! NSDate
+        let object = objects[indexPath.row] as! Date
         cell.textLabel!.text = object.description
         return cell
     }
