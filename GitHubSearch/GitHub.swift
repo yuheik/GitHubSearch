@@ -12,15 +12,14 @@ protocol GitHubEndpoint : APIEndpoint {
     var path: String { get }
 }
 
-private let GitHubURL = URL(string: "https://api.github.com")
+private let GitHubURL = URL(string: "https://api.github.com/")
 
 extension GitHubEndpoint {
-    var url: URL {
-        let tmp = URL(string: path, relativeTo: GitHubURL)!
-        return tmp
+    var url: NSURL {
+        return NSURL(string: path, relativeTo: GitHubURL)!
     }
 
-    var headers: [String : String]? {
+    var headers: Parameters {
         return [ "Accept" : "application/vnd.github.v3+json" ]
     }
 }
@@ -28,7 +27,7 @@ extension GitHubEndpoint {
 struct SearchRepositories : GitHubEndpoint {
     var path = "search/repositories"
     typealias ResponseType = SearchResult<Repository>
-    var query: [String : String]? {
+    var query: Parameters? {
         return [ "q"    : searchQuery,
                  "page" : String(page) ]
     }
@@ -38,6 +37,29 @@ struct SearchRepositories : GitHubEndpoint {
     init(searchQuery: String, page: Int) {
         self.searchQuery = searchQuery
         self.page = page
+    }
+}
+
+private let dateFormatter: NSDateFormatter = {
+    let formatter = NSDateFormatter()
+    formatter.calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
+    formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+    return formatter
+}()
+
+struct FormattedDateConverter: JSONValueConverter {
+    typealias FromType = String
+    typealias ToType = NSDate
+
+    private let dateFormatter: NSDateFormatter
+
+    func convert(value: FromType) throws -> DateConverter.ToType {
+        guard let date = dateFormatter.dateFromString(value) else {
+            throw JSONDecodeError.UnexpectedValue(key: key,
+                                                  value: value,
+                                                  message: "Invalid date format for '\(dateFormatter.dateFormat)'")
+        }
+        return date
     }
 }
 
@@ -67,13 +89,13 @@ struct Repository: JSONDecodable {
     let full_name         : String
     let owner             : Owner
     let is_private        : Bool
-    let html_url          : URL
+    let html_url          : NSURL
     let description       : String?
     let fork              : Bool
-    let url               : URL
-    let created_at        : Date
-    let updated_at        : Date
-    let pushed_at         : Date?
+    let url               : NSURL
+    let created_at        : NSDate
+    let updated_at        : NSDate
+    let pushed_at         : NSDate?
     let homepage          : String?
     let size              : Int
     let stargazers_count  : Int
@@ -86,7 +108,6 @@ struct Repository: JSONDecodable {
 
     init(JSON: JSONObject) throws {
         LogUtil.traceFunc(className: "Repository")
-
         self.id                = try JSON.get("id")
         self.name              = try JSON.get("name")
         self.full_name         = try JSON.get("full_name")
@@ -98,7 +119,7 @@ struct Repository: JSONDecodable {
         self.url               = try JSON.get("url")
         self.created_at        = try JSON.get("created_at")
         self.updated_at        = try JSON.get("updated_at")
-        self.pushed_at         = try JSON.get("pushed_at") as Date
+        self.pushed_at         = try JSON.get("pushed_at", converter: FormattedDateConverter(dateFormatter: dateFormatter)) as Date
         self.homepage          = try JSON.get("homepage") as String
         self.size              = try JSON.get("size")
         self.stargazers_count  = try JSON.get("stargazers_count")
@@ -125,12 +146,12 @@ struct Owner: JSONDecodable {
     init(JSON: JSONObject) throws {
         LogUtil.traceFunc(className: "Owner")
 
-        self.login             = try! JSON.get("login")
-        self.id                = try! JSON.get("id")
-        self.avaterURL         = URL(string: try! JSON.get("avaterURL"))!
-        self.gravatarID        = try! JSON.get("gravatarID")
-        self.url               = URL(string: try! JSON.get("url"))!
-        self.receivedEventsURL = URL(string: try! JSON.get("receivedEventsURL"))!
+        self.login             = try JSON.get("login")
+        self.id                = try JSON.get("id")
+        self.avaterURL         = try JSON.get("avaterURL", converter: FormattedDateConverter(dateFormatter: dateFormatter))
+        self.gravatarID        = try JSON.get("gravatarID")
+        self.url               = try JSON.get("url")
+        self.receivedEventsURL = try JSON.get("receivedEventsURL")
         self.type              = try JSON.get("type")
 
         LogUtil.traceFunc(className: "Owner", message: "done")

@@ -95,7 +95,7 @@ enum APIResult<Response> {
 }
 
 struct Parameters: DictionaryLiteralConvertible {
-    typealias Key = Stringnn
+    typealias Key = String
     typealias Value = String?
     private(set) var parameters: [Key: Value] = [:]
 
