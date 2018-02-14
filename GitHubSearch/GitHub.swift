@@ -15,7 +15,7 @@ protocol GitHubEndpoint : APIEndpoint {
 private let GitHubURL = URL(string: "https://api.github.com/")
 
 extension GitHubEndpoint {
-    var url: URL {
+    var URL: URL {
         return Foundation.URL(string: path, relativeTo: GitHubURL)!
     }
 
@@ -52,6 +52,10 @@ struct FormattedDateConverter: JSONValueConverter {
     typealias ToType = Date
 
     private let dateFormatter: DateFormatter
+
+    internal init(dateFormatter: DateFormatter) {
+        self.dateFormatter = dateFormatter
+    }
 
     func convert(key: String, value: FromType) throws -> DateConverter.ToType {
         guard let date = dateFormatter.date(from: value) else {
