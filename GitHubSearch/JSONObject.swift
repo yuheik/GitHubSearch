@@ -27,6 +27,8 @@ enum JSONDecodeError: Error, CustomDebugStringConvertible {
     }
 }
 
+
+// MARK: JSONValueConverter
 protocol JSONValueConverter {
     associatedtype FromType
     associatedtype ToType
@@ -126,11 +128,11 @@ struct JSONObject {
         return try get(key, converter: DefaultConverter)
     }
 
-    func get<T: JSONConvertible where T == T.ConverterType.ToType>(_ key: String) throws -> T {
+    func get<T: JSONConvertible>(_ key: String) throws -> T where T == T.ConverterType.ToType {
         return try get(key, converter: T.converter)
     }
 
-    func get<T: JSONConvertible where T == T.ConverterType.ToType>(_ key: String) throws -> T? {
+    func get<T: JSONConvertible>(_ key: String) throws -> T? where T == T.ConverterType.ToType {
         return try get(key, converter: T.converter)
     }
 
@@ -189,4 +191,3 @@ struct DateConverter: JSONValueConverter {
         return Date(timeIntervalSince1970: value)
     }
 }
-
