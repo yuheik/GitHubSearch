@@ -87,7 +87,7 @@ class APIRequest {
                     for case let item as [String : AnyObject] in items {
                         if let name = item["name"] as? String {
                             LogUtil.debug(name)
-                            print(name)
+//                            print(name)
                         }
                     }
                 }

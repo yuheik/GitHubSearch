@@ -32,9 +32,9 @@ class MasterViewController: UITableViewController {
         SearchRepositories(searchQuery: "Hatena", page: 0).request(session: URLSession.shared) { (result) in
             switch result {
             case .Success(let searchResult):
-                print(searchResult)
+                LogUtil.debug("searchResult")
             case .Failure(let error):
-                print(error)
+                LogUtil.error(error)
             }
         }
     }

@@ -69,14 +69,14 @@ extension APIEndpoint {
                         throw APIError.UnexpectedResponseType
                     }
 
-                    print(dic)
+                    LogUtil.debug(dic.description)
 
                     let response = try ResponseType(JSON: JSONObject(JSON: dic))
                     LogUtil.debug("response")
                     callback(.Success(response))
                 } catch {
                     LogUtil.debug("failure")
-                    print(error)
+                    LogUtil.error(error)
                     callback(.Failure(error))
                 }
             } else {
