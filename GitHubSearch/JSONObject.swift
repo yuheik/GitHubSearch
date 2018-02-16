@@ -121,11 +121,11 @@ struct JSONObject {
     }
 
     func get<T: JSONPrimitive>(_ key: String) throws -> T {
-        return try get(key, converter: DefaultConverter)
+        return try get(key, converter: DefaultConverter())
     }
 
     func get<T: JSONPrimitive>(_ key: String) throws -> T? {
-        return try get(key, converter: DefaultConverter)
+        return try get(key, converter: DefaultConverter())
     }
 
     func get<T: JSONConvertible>(_ key: String) throws -> T where T == T.ConverterType.ToType {

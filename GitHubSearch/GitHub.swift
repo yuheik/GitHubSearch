@@ -152,7 +152,7 @@ struct Owner: JSONDecodable {
 
         self.login             = try JSON.get("login")
         self.id                = try JSON.get("id")
-        self.avaterURL         = try JSON.get("avaterURL", converter: FormattedDateConverter(dateFormatter: dateFormatter))
+        self.avaterURL         = try JSON.get("avaterURL")
         self.gravatarID        = try JSON.get("gravatarID")
         self.url               = try JSON.get("url")
         self.receivedEventsURL = try JSON.get("receivedEventsURL")
