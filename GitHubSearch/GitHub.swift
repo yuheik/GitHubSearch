@@ -116,19 +116,19 @@ struct Repository: JSONDecodable {
         self.name              = try JSON.get("name")
         self.full_name         = try JSON.get("full_name")
         self.owner             = try JSON.get("owner")
-        self.is_private        = try JSON.get("is_private")
+        self.is_private        = try JSON.get("private")
         self.html_url          = try JSON.get("html_url")
-        self.description       = try JSON.get("description") as String
+        self.description       = try JSON.get("description")
         self.fork              = try JSON.get("fork")
         self.url               = try JSON.get("url")
-        self.created_at        = try JSON.get("created_at")
-        self.updated_at        = try JSON.get("updated_at")
+        self.created_at        = try JSON.get("created_at", converter: FormattedDateConverter(dateFormatter: dateFormatter)) as Date
+        self.updated_at        = try JSON.get("updated_at", converter: FormattedDateConverter(dateFormatter: dateFormatter)) as Date
         self.pushed_at         = try JSON.get("pushed_at", converter: FormattedDateConverter(dateFormatter: dateFormatter)) as Date
-        self.homepage          = try JSON.get("homepage") as String
+        self.homepage          = try JSON.get("homepage")
         self.size              = try JSON.get("size")
         self.stargazers_count  = try JSON.get("stargazers_count")
         self.watchers_count    = try JSON.get("watchers_count")
-        self.language          = try JSON.get("language") as String
+        self.language          = try JSON.get("language")
         self.forks_count       = try JSON.get("forks_count")
         self.open_issues_count = try JSON.get("open_issues_count")
         self.default_branch    = try JSON.get("default_branch")
@@ -152,10 +152,10 @@ struct Owner: JSONDecodable {
 
         self.login             = try JSON.get("login")
         self.id                = try JSON.get("id")
-        self.avaterURL         = try JSON.get("avaterURL")
-        self.gravatarID        = try JSON.get("gravatarID")
+        self.avaterURL         = try JSON.get("avatar_url")
+        self.gravatarID        = try JSON.get("gravatar_id")
         self.url               = try JSON.get("url")
-        self.receivedEventsURL = try JSON.get("receivedEventsURL")
+        self.receivedEventsURL = try JSON.get("received_events_url")
         self.type              = try JSON.get("type")
 
         LogUtil.traceFunc(className: "Owner", message: "done")
