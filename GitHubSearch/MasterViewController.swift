@@ -32,12 +32,15 @@ class MasterViewController: UITableViewController {
             detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
         }
 
-//        let _ = APIRequest() // try call API request.
         SearchRepositories(searchQuery: "Hatena", page: 0).request(session: URLSession.shared) { (result) in
             switch result {
             case .Success(let searchResult):
-                LogUtil.debug("searchResult")
+                LogUtil.debug("Success -----------------------------")
+                for item in searchResult.items {
+                    LogUtil.debug(item.description ?? "<description not set>")
+                }
             case .Failure(let error):
+                LogUtil.debug("Failure -----------------------------")
                 LogUtil.error(error)
             }
         }
