@@ -128,7 +128,7 @@ struct JSONObject {
         return try get(key, converter: DefaultConverter())
     }
 
-    func get<T: JSONConvertible>(_ key: String) throws -> T where T == T.ConverterType.ToType {
+    func get<T: JSONConvertible>(_ key: String) throws -> T  where T == T.ConverterType.ToType {
         return try get(key, converter: T.converter)
     }
 

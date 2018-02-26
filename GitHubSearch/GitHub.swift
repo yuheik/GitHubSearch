@@ -76,10 +76,11 @@ struct SearchResult<ItemType: JSONDecodable>: JSONDecodable {
         LogUtil.traceFunc(className: "SearchResult")
 
         self.total_count        = try JSON.get("total_count")
-
         LogUtil.debug("\(total_count)")
+
         self.incomplete_results = try JSON.get("incomplete_results")
         LogUtil.debug("\(incomplete_results)")
+
         self.items              = try JSON.get("items")
         LogUtil.debug("C")
 
@@ -112,6 +113,7 @@ struct Repository: JSONDecodable {
 
     init(JSON: JSONObject) throws {
         LogUtil.traceFunc(className: "Repository")
+
         self.id                = try JSON.get("id")
         self.name              = try JSON.get("name")
         self.full_name         = try JSON.get("full_name")
@@ -123,7 +125,7 @@ struct Repository: JSONDecodable {
         self.url               = try JSON.get("url")
         self.created_at        = try JSON.get("created_at", converter: FormattedDateConverter(dateFormatter: dateFormatter)) as Date
         self.updated_at        = try JSON.get("updated_at", converter: FormattedDateConverter(dateFormatter: dateFormatter)) as Date
-        self.pushed_at         = try JSON.get("pushed_at", converter: FormattedDateConverter(dateFormatter: dateFormatter)) as Date
+        self.pushed_at         = try JSON.get("pushed_at",  converter: FormattedDateConverter(dateFormatter: dateFormatter)) as Date
         self.homepage          = try JSON.get("homepage")
         self.size              = try JSON.get("size")
         self.stargazers_count  = try JSON.get("stargazers_count")
