@@ -11,7 +11,7 @@ import UIKit
 class MasterViewController: UITableViewController {
 
     var detailViewController: DetailViewController? = nil
-    var objects = [Any]()
+    var objects                                     = [Any]()
 
 
     override func viewDidLoad() {
@@ -21,8 +21,12 @@ class MasterViewController: UITableViewController {
         // Do any additional setup after loading the view, typically from a nib.
         navigationItem.leftBarButtonItem = editButtonItem
 
-        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(insertNewObject(_:)))
+        let addButton = UIBarButtonItem(barButtonSystemItem : .add,
+                                        target              : self,
+                                        action              : #selector(insertNewObject(_:)))
+
         navigationItem.rightBarButtonItem = addButton
+
         if let split = splitViewController {
             let controllers = split.viewControllers
             detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
@@ -47,8 +51,9 @@ class MasterViewController: UITableViewController {
     }
 
     override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
         LogUtil.traceFunc()
+
+        super.didReceiveMemoryWarning()
 
         // Dispose of any resources that can be recreated.
     }
@@ -64,16 +69,20 @@ class MasterViewController: UITableViewController {
 
     // MARK: - Segues
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    override func prepare(for segue : UIStoryboardSegue,
+                          sender    : Any?) {
+
         LogUtil.traceFunc(params: ["segue"  : segue.identifier!,
                                    "sender" : sender!])
 
         if segue.identifier == "showDetail" {
             if let indexPath = tableView.indexPathForSelectedRow {
-                let object = objects[indexPath.row] as! Date
+
+                let object     = objects[indexPath.row] as! Date
                 let controller = (segue.destination as! UINavigationController).topViewController as! DetailViewController
-                controller.detailItem = object
-                controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
+
+                controller.detailItem                                   = object
+                controller.navigationItem.leftBarButtonItem             = splitViewController?.displayModeButtonItem
                 controller.navigationItem.leftItemsSupplementBackButton = true
             }
         }
@@ -84,27 +93,35 @@ class MasterViewController: UITableViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         LogUtil.traceFunc()
         LogUtil.debug("always 1")
+
         return 1
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView                   : UITableView,
+                            numberOfRowsInSection section : Int) -> Int {
+
         LogUtil.traceFunc(params: ["section" : section])
         LogUtil.debug(objects.count.description)
 
         return objects.count
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView            : UITableView,
+                            cellForRowAt indexPath : IndexPath) -> UITableViewCell {
+
         LogUtil.traceFunc(params: ["cellForRowAt": indexPath])
 
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-
+        let cell   = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         let object = objects[indexPath.row] as! Date
+
         cell.textLabel!.text = object.description
+
         return cell
     }
 
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    override func tableView(_ tableView            : UITableView,
+                            canEditRowAt indexPath : IndexPath) -> Bool {
+
         LogUtil.traceFunc(params: ["canEditRowAt" : indexPath])
         LogUtil.debug("always return true")
 
@@ -112,9 +129,10 @@ class MasterViewController: UITableViewController {
         return true
     }
 
-    override func tableView(_ tableView: UITableView,
-                            commit editingStyle: UITableViewCellEditingStyle,
-                            forRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView         : UITableView,
+                            commit editingStyle : UITableViewCellEditingStyle,
+                            forRowAt indexPath  : IndexPath) {
+
         LogUtil.traceFunc(params: ["commit"   : editingStyle,
                                    "forRowAt" : indexPath])
 
@@ -129,7 +147,4 @@ class MasterViewController: UITableViewController {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
         }
     }
-
-
 }
-

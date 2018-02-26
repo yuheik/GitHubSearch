@@ -9,25 +9,26 @@
 import Foundation
 
 protocol GitHubEndpoint : APIEndpoint {
-    var path: String { get }
+    var Path: String { get }
 }
 
 private let GitHubURL = URL(string: "https://api.github.com/")
 
 extension GitHubEndpoint {
-    var URL: URL {
-        return Foundation.URL(string: path, relativeTo: GitHubURL)!
+    var Url: URL {
+        return Foundation.URL(string: Path, relativeTo: GitHubURL)!
     }
 
-    var headers: Parameters {
+    var Headers: Parameters {
         return [ "Accept" : "application/vnd.github.v3+json" ]
     }
 }
 
 struct SearchRepositories : GitHubEndpoint {
-    var path = "search/repositories"
+    var Path = "search/repositories"
     typealias ResponseType = SearchResult<Repository>
-    var query: Parameters? {
+
+    var Query: Parameters? {
         return [ "q"    : searchQuery,
                  "page" : String(page) ]
     }
@@ -41,10 +42,10 @@ struct SearchRepositories : GitHubEndpoint {
 }
 
 private let dateFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.calendar = Calendar(identifier: Calendar.Identifier.gregorian)
-    formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
-    return formatter
+    let dateFormatter = DateFormatter()
+    dateFormatter.calendar = Calendar(identifier: Calendar.Identifier.gregorian)
+    dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+    return dateFormatter
 }()
 
 struct FormattedDateConverter: JSONValueConverter {

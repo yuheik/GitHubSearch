@@ -38,7 +38,7 @@ protocol JSONValueConverter {
 
 struct DefaultConverter<T>: JSONValueConverter {
     typealias FromType = T
-    typealias ToType = T
+    typealias ToType   = T
 
     func convert(key: String, value: FromType) -> DefaultConverter.ToType {
         return value
@@ -47,16 +47,16 @@ struct DefaultConverter<T>: JSONValueConverter {
 
 struct ObjectConverter<T: JSONDecodable>: JSONValueConverter {
     typealias FromType = [String : AnyObject]
-    typealias ToType = T
+    typealias ToType   = T
 
     func convert(key: String, value: FromType) throws -> ObjectConverter.ToType {
-        return try T(JSON: JSONObject(JSON: value))
+        return try T(JSON: JSONObject(json: value))
     }
 }
 
 struct ArrayConverter<T: JSONDecodable>: JSONValueConverter {
     typealias FromType = [[String : AnyObject]]
-    typealias ToType = [T]
+    typealias ToType   = [T]
 
     func convert(key: String, value: FromType) throws -> ArrayConverter.ToType {
         return try value.map(JSONObject.init).map(T.init)
@@ -67,10 +67,10 @@ struct ArrayConverter<T: JSONDecodable>: JSONValueConverter {
 
 protocol JSONPrimitive {}
 
-extension String: JSONPrimitive {}
-extension Int: JSONPrimitive {}
-extension Double: JSONPrimitive {}
-extension Bool: JSONPrimitive {}
+extension String : JSONPrimitive {}
+extension Int    : JSONPrimitive {}
+extension Double : JSONPrimitive {}
+extension Bool   : JSONPrimitive {}
 
 // MARK: Types that could be coverted by using JSONValueConverter
 
@@ -82,28 +82,28 @@ protocol JSONConvertible {
 // MARK: JSONObject
 
 struct JSONObject {
-    let JSON: [String : AnyObject]
+    let json: [String : AnyObject]
 
-    init(JSON: [String : AnyObject]) {
-        self.JSON = JSON
+    init(json: [String : AnyObject]) {
+        self.json = json
     }
 
     func get<Converter: JSONValueConverter>(_ key: String, converter: Converter) throws -> Converter.ToType {
-        guard let value = JSON[key] else {
+        guard let value = json[key] else {
             throw JSONDecodeError.MissingRequiredKey(key)
         }
 
         guard let typedValue = value as? Converter.FromType else {
             throw JSONDecodeError.UnexpectedType(key      : key,
                                                  expected : Converter.FromType.self,
-                                                 actual  : type(of: value))
+                                                 actual   : type(of: value))
         }
 
         return try converter.convert(key: key, value: typedValue)
     }
 
     func get<Converter: JSONValueConverter>(_ key: String, converter: Converter) throws -> Converter.ToType? {
-        guard let value = JSON[key] else {
+        guard let value = json[key] else {
             return nil
         }
 
@@ -173,11 +173,13 @@ extension Date: JSONConvertible {
 
 struct URLConverter: JSONValueConverter {
     typealias FromType = String
-    typealias ToType = URL
+    typealias ToType   = URL
 
     func convert(key: String, value: FromType) throws -> URLConverter.ToType {
         guard let URL = URL(string: value) else {
-            throw JSONDecodeError.UnexpectedValue(key: key, value: value, message: "Invalid URL")
+            throw JSONDecodeError.UnexpectedValue(key     : key,
+                                                  value   : value,
+                                                  message : "Invalid URL")
         }
         return URL
     }
@@ -185,7 +187,7 @@ struct URLConverter: JSONValueConverter {
 
 struct DateConverter: JSONValueConverter {
     typealias FromType = TimeInterval
-    typealias ToType = Date
+    typealias ToType   = Date
 
     func convert(key: String, value: FromType) -> DateConverter.ToType {
         return Date(timeIntervalSince1970: value)

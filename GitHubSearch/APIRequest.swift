@@ -23,15 +23,15 @@ class APIRequest {
         let receivedEventsURL : URL
         let type              : String
 
-        init?(JSON: [String : AnyObject]) {
+        init?(json: [String : AnyObject]) {
             guard
-                let login             = JSON["login"]              as? String,
-                let id                = JSON["id"]                 as? Int,
-                let avaterURL         = (JSON["avaterURL"]         as? String).flatMap(URL.init(string:)),
-                let gravatarID        = JSON["gravatarID"]         as? String,
-                let url               = (JSON["url"]               as? String).flatMap(URL.init(string:)),
-                let receivedEventsURL = (JSON["receivedEventsURL"] as? String).flatMap(URL.init(string:)),
-                let type              = JSON["type"]               as? String
+                let login             =  json["login"]             as? String,
+                let id                =  json["id"]                as? Int,
+                let avaterURL         = (json["avaterURL"]         as? String).flatMap(URL.init(string:)),
+                let gravatarID        =  json["gravatarID"]        as? String,
+                let url               = (json["url"]               as? String).flatMap(URL.init(string:)),
+                let receivedEventsURL = (json["receivedEventsURL"] as? String).flatMap(URL.init(string:)),
+                let type              =  json["type"]              as? String
                 else {
                     return nil
             }
@@ -69,21 +69,21 @@ class APIRequest {
     private func request() {
         LogUtil.traceFunc()
 
-        var request = URLRequest(url: GITHUB_URL)
-        request.httpMethod = "GET"
-        request.addValue("application/vnd.github.v3+json", forHTTPHeaderField: "Accept")
+        var urlRequest = URLRequest(url: GITHUB_URL)
+        urlRequest.httpMethod = "GET"
+        urlRequest.addValue("application/vnd.github.v3+json", forHTTPHeaderField: "Accept")
 
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+        let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
             if let error = error {
                 LogUtil.error(error)
             }
 
             // let data: NSData!
-            var JSON: [String : AnyObject]?
-            JSON = try! JSONSerialization.jsonObject(with: data!, options: []) as? [String : AnyObject]
+            var json1: [String : AnyObject]?
+            json1 = try! JSONSerialization.jsonObject(with: data!, options: []) as? [String : AnyObject]
 
-            if let JSON = JSON {
-                if let items = JSON["items"] as? [AnyObject] {
+            if let json2 = json1 {
+                if let items = json2["items"] as? [AnyObject] {
                     for case let item as [String : AnyObject] in items {
                         if let name = item["name"] as? String {
                             LogUtil.debug(name)

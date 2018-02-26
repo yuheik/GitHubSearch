@@ -25,29 +25,28 @@ enum HTTPMethod: String {
 }
 
 protocol APIEndpoint {
-    var URL                     : URL         { get }
-    var method                  : HTTPMethod  { get }
-    var query                   : Parameters? { get }
-    var headers                 : Parameters? { get }
+    var Url                     : URL         { get }
+    var HttpMethod              : HTTPMethod  { get }
+    var Query                   : Parameters? { get }
+    var Headers                 : Parameters? { get }
     associatedtype ResponseType : JSONDecodable
 }
 
 extension APIEndpoint {
-    var method  : HTTPMethod  { return .GET }
-    var query   : Parameters? { return nil  }
-    var headers : Parameters? { return nil  }
+    var HttpMethod : HTTPMethod  { return .GET }
+    var Query      : Parameters? { return nil  }
+    var Headers    : Parameters? { return nil  }
 }
 
 extension APIEndpoint {
-    private var URLRequest: URLRequest {
-        var components = URLComponents(url: URL as URL, // @todo
-                                       resolvingAgainstBaseURL: true)
-        components?.queryItems = query?.parameters.map(URLQueryItem.init)
+    private var urlRequest: URLRequest {
+        var components = URLComponents(url: Url, resolvingAgainstBaseURL: true)
+        components?.queryItems = Query?.parameters.map(URLQueryItem.init)
 
-        let req = NSMutableURLRequest(url: components?.url ?? URL)
-        req.httpMethod = method.rawValue
+        let req = NSMutableURLRequest(url: components?.url ?? Url)
+        req.httpMethod = HttpMethod.rawValue
 
-        for case let (key, value) in headers?.parameters ?? [:] {
+        for case let (key, value) in Headers?.parameters ?? [:] {
             req.addValue(value!, forHTTPHeaderField: key)
         }
 
@@ -58,7 +57,7 @@ extension APIEndpoint {
                  callback: @escaping (APIResult<ResponseType>) -> Void) -> URLSessionDataTask {
         LogUtil.traceFunc(className: "APIEndpoint")
 
-        let task = session.dataTask(with: URLRequest) { (data, response, error) in
+        let task = session.dataTask(with: urlRequest) { (data, response, error) in
             if let e = error {
                 LogUtil.error(e)
                 callback(.Failure(e))
@@ -71,7 +70,7 @@ extension APIEndpoint {
 
                     LogUtil.debug(dic.description)
 
-                    let response = try ResponseType(JSON: JSONObject(JSON: dic))
+                    let response = try ResponseType(JSON: JSONObject(json: dic))
                     LogUtil.debug("response")
                     callback(.Success(response))
                 } catch {
@@ -105,4 +104,3 @@ struct Parameters: ExpressibleByDictionaryLiteral {
         }
     }
 }
-
