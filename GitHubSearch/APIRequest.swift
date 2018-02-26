@@ -11,7 +11,7 @@ import Foundation
 class APIRequest {
 
     static let GITHUB_API: String = "https://api.github.com/search/repositories?q=Hatena&page=1"
-    let GITHUB_URL = URL(string: GITHUB_API)!
+    let GITHUB_URL                = URL(string: GITHUB_API)!
 
     // MARK: Struct
     struct Owner {
@@ -97,4 +97,3 @@ class APIRequest {
         task.resume()
     }
 }
-

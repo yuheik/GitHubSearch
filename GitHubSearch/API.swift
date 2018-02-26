@@ -53,8 +53,8 @@ extension APIEndpoint {
         return req as URLRequest
     }
 
-    func request(session: URLSession,
-                 callback: @escaping (APIResult<ResponseType>) -> Void) -> URLSessionDataTask {
+    func request(session  : URLSession,
+                 callback : @escaping (APIResult<ResponseType>) -> Void) -> URLSessionDataTask {
         LogUtil.traceFunc(className: "APIEndpoint")
 
         let task = session.dataTask(with: urlRequest) { (data, response, error) in
@@ -63,7 +63,8 @@ extension APIEndpoint {
                 callback(.Failure(e))
             } else if let data = data {
                 do {
-                    guard let dic = try JSONSerialization.jsonObject(with: data, options: []) as? [String : AnyObject] else {
+                    guard let dic = try JSONSerialization.jsonObject(with    : data,
+                                                                     options : []) as? [String : AnyObject] else {
                         LogUtil.debug("unexpected response type")
                         throw APIError.UnexpectedResponseType
                     }
@@ -72,10 +73,13 @@ extension APIEndpoint {
 
                     let response = try ResponseType(JSON: JSONObject(json: dic))
                     LogUtil.debug("response")
+
                     callback(.Success(response))
+
                 } catch {
                     LogUtil.debug("failure")
                     LogUtil.error(error)
+
                     callback(.Failure(error))
                 }
             } else {
@@ -94,8 +98,9 @@ enum APIResult<Response> {
 }
 
 struct Parameters: ExpressibleByDictionaryLiteral {
-    typealias Key = String
+    typealias Key   = String
     typealias Value = String?
+
     private(set) var parameters: [Key: Value] = [:]
 
     init(dictionaryLiteral elements: (String, String?)...) {
