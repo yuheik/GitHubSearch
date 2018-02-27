@@ -12,7 +12,11 @@ class MasterViewController: UITableViewController {
 
     var detailViewController: DetailViewController? = nil
     var objects                                     = [Any]()
-
+    var repositories: [Repository]                  = [] {
+        didSet {
+            tableView.reloadData()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,12 +36,17 @@ class MasterViewController: UITableViewController {
             detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
         }
 
-        SearchRepositories(searchQuery: "Hatena", page: 0).request(session: URLSession.shared) { (result) in
+        let _ = SearchRepositories(searchQuery: "Hatena", page: 0).request(session: URLSession.shared) { (result) in
             switch result {
             case .Success(let searchResult):
                 LogUtil.debug("Success -----------------------------")
                 for item in searchResult.items {
                     LogUtil.debug(item.description ?? "<description not set>")
+                }
+
+                DispatchQueue.main.async {
+                    LogUtil.debug("going to append \(searchResult.items).")
+                    self.repositories.append(contentsOf: searchResult.items)
                 }
             case .Failure(let error):
                 LogUtil.debug("Failure -----------------------------")
@@ -106,7 +115,7 @@ class MasterViewController: UITableViewController {
         LogUtil.traceFunc(params: ["section" : section])
         LogUtil.debug(objects.count.description)
 
-        return objects.count
+        return repositories.count
     }
 
     override func tableView(_ tableView            : UITableView,
@@ -114,11 +123,10 @@ class MasterViewController: UITableViewController {
 
         LogUtil.traceFunc(params: ["cellForRowAt": indexPath])
 
-        let cell   = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        let object = objects[indexPath.row] as! Date
+        let cell       = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        let repository = repositories[indexPath.row]
 
-        cell.textLabel!.text = object.description
-
+        cell.textLabel?.text = repository.name
         return cell
     }
 
