@@ -12,14 +12,19 @@ class DetailViewController: UIViewController {
 
     @IBOutlet weak var detailDescriptionLabel: UILabel!
 
+    var repository: Repository? {
+        didSet {
+            configureView()
+        }
+    }
 
-    func configureView() {
+    private func configureView() {
         LogUtil.traceFunc()
 
         // Update the user interface for the detail item.
-        if let detail = detailItem {
+        if let repository = repository {
             if let label = detailDescriptionLabel {
-                label.text = detail.description
+                label.text = repository.name
             }
         }
     }
@@ -38,16 +43,5 @@ class DetailViewController: UIViewController {
 
         // Dispose of any resources that can be recreated.
     }
-
-    var detailItem: Date? {
-        didSet {
-            LogUtil.traceFunc()
-
-            // Update the view.
-            configureView()
-        }
-    }
-
-
 }
 

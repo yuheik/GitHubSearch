@@ -90,10 +90,11 @@ class MasterViewController: UITableViewController {
         if segue.identifier == "showDetail" {
             if let indexPath = tableView.indexPathForSelectedRow {
 
-                let object     = objects[indexPath.row] as! Date
+                let repository = repositories[indexPath.row]
                 let controller = (segue.destination as! UINavigationController).topViewController as! DetailViewController
 
-                controller.detailItem                                   = object
+                controller.repository = repository
+
                 controller.navigationItem.leftBarButtonItem             = splitViewController?.displayModeButtonItem
                 controller.navigationItem.leftItemsSupplementBackButton = true
             }
