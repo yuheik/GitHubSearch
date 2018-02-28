@@ -71,7 +71,7 @@ extension APIEndpoint {
 
                     LogUtil.debug(dic.description)
 
-                    let response = try ResponseType(JSON: JSONObject(json: dic))
+                    let response = try ResponseType(jsonObject: JSONObject(json: dic))
                     LogUtil.debug("response")
 
                     callback(.Success(response))

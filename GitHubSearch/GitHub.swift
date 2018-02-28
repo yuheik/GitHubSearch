@@ -73,16 +73,16 @@ struct SearchResult<ItemType: JSONDecodable>: JSONDecodable {
     let incomplete_results : Bool
     let items              : [ItemType]
 
-    init(JSON: JSONObject) throws {
+    init(jsonObject: JSONObject) throws {
         LogUtil.traceFunc(className: "SearchResult")
 
-        self.total_count        = try JSON.get("total_count")
+        self.total_count        = try jsonObject.get("total_count")
         LogUtil.debug("\(total_count)")
 
-        self.incomplete_results = try JSON.get("incomplete_results")
+        self.incomplete_results = try jsonObject.get("incomplete_results")
         LogUtil.debug("\(incomplete_results)")
 
-        self.items              = try JSON.get("items")
+        self.items              = try jsonObject.get("items")
         LogUtil.debug("C")
 
         LogUtil.traceFunc(className: "SearchResult", message: "done")
@@ -112,30 +112,30 @@ struct Repository: JSONDecodable {
     let default_branch    : String
     let score             : Double
 
-    init(JSON: JSONObject) throws {
+    init(jsonObject: JSONObject) throws {
         LogUtil.traceFunc(className: "Repository")
 
-        self.id                = try JSON.get("id")
-        self.name              = try JSON.get("name")
-        self.full_name         = try JSON.get("full_name")
-        self.owner             = try JSON.get("owner")
-        self.is_private        = try JSON.get("private")
-        self.html_url          = try JSON.get("html_url")
-        self.description       = try JSON.get("description")
-        self.fork              = try JSON.get("fork")
-        self.url               = try JSON.get("url")
-        self.created_at        = try JSON.get("created_at", converter: FormattedDateConverter(dateFormatter: dateFormatter)) as Date
-        self.updated_at        = try JSON.get("updated_at", converter: FormattedDateConverter(dateFormatter: dateFormatter)) as Date
-        self.pushed_at         = try JSON.get("pushed_at",  converter: FormattedDateConverter(dateFormatter: dateFormatter)) as Date
-        self.homepage          = try JSON.get("homepage")
-        self.size              = try JSON.get("size")
-        self.stargazers_count  = try JSON.get("stargazers_count")
-        self.watchers_count    = try JSON.get("watchers_count")
-        self.language          = try JSON.get("language")
-        self.forks_count       = try JSON.get("forks_count")
-        self.open_issues_count = try JSON.get("open_issues_count")
-        self.default_branch    = try JSON.get("default_branch")
-        self.score             = try JSON.get("score")
+        self.id                = try jsonObject.get("id")
+        self.name              = try jsonObject.get("name")
+        self.full_name         = try jsonObject.get("full_name")
+        self.owner             = try jsonObject.get("owner")
+        self.is_private        = try jsonObject.get("private")
+        self.html_url          = try jsonObject.get("html_url")
+        self.description       = try jsonObject.get("description")
+        self.fork              = try jsonObject.get("fork")
+        self.url               = try jsonObject.get("url")
+        self.created_at        = try jsonObject.get("created_at", converter: FormattedDateConverter(dateFormatter: dateFormatter)) as Date
+        self.updated_at        = try jsonObject.get("updated_at", converter: FormattedDateConverter(dateFormatter: dateFormatter)) as Date
+        self.pushed_at         = try jsonObject.get("pushed_at",  converter: FormattedDateConverter(dateFormatter: dateFormatter)) as Date
+        self.homepage          = try jsonObject.get("homepage")
+        self.size              = try jsonObject.get("size")
+        self.stargazers_count  = try jsonObject.get("stargazers_count")
+        self.watchers_count    = try jsonObject.get("watchers_count")
+        self.language          = try jsonObject.get("language")
+        self.forks_count       = try jsonObject.get("forks_count")
+        self.open_issues_count = try jsonObject.get("open_issues_count")
+        self.default_branch    = try jsonObject.get("default_branch")
+        self.score             = try jsonObject.get("score")
 
         LogUtil.traceFunc(className: "Repository", message: "done")
     }
@@ -150,16 +150,16 @@ struct Owner: JSONDecodable {
     let receivedEventsURL : URL
     let type              : String
 
-    init(JSON: JSONObject) throws {
+    init(jsonObject: JSONObject) throws {
         LogUtil.traceFunc(className: "Owner")
 
-        self.login             = try JSON.get("login")
-        self.id                = try JSON.get("id")
-        self.avaterURL         = try JSON.get("avatar_url")
-        self.gravatarID        = try JSON.get("gravatar_id")
-        self.url               = try JSON.get("url")
-        self.receivedEventsURL = try JSON.get("received_events_url")
-        self.type              = try JSON.get("type")
+        self.login             = try jsonObject.get("login")
+        self.id                = try jsonObject.get("id")
+        self.avaterURL         = try jsonObject.get("avatar_url")
+        self.gravatarID        = try jsonObject.get("gravatar_id")
+        self.url               = try jsonObject.get("url")
+        self.receivedEventsURL = try jsonObject.get("received_events_url")
+        self.type              = try jsonObject.get("type")
 
         LogUtil.traceFunc(className: "Owner", message: "done")
     }

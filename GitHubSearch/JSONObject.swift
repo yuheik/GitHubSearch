@@ -7,7 +7,7 @@
 //
 
 protocol JSONDecodable {
-    init(JSON: JSONObject) throws
+    init(jsonObject: JSONObject) throws
 }
 
 enum JSONDecodeError: Error, CustomDebugStringConvertible {
@@ -50,7 +50,7 @@ struct ObjectConverter<T: JSONDecodable>: JSONValueConverter {
     typealias ToType   = T
 
     func convert(key: String, value: FromType) throws -> ObjectConverter.ToType {
-        return try T(JSON: JSONObject(json: value))
+        return try T(jsonObject: JSONObject(json: value))
     }
 }
 
